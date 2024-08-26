@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.praxis.crmAlumnos.Vo.AlumnoVO;
 import com.praxis.crmAlumnos.dao.AlumnoDao;
+import com.praxis.crmAlumnos.dao.CursoDao;
 import com.praxis.crmAlumnos.model.Alumno;
+import com.praxis.crmAlumnos.model.Curso;
 
 import jakarta.transaction.Transactional;
 
@@ -17,6 +19,8 @@ public class ServicioAlumnoImp implements ServicioAlumno {
 
 	@Autowired
 	private AlumnoDao alumnoDao;
+	
+	
 
 	@Override
 	public AlumnoVO findAll() {
@@ -116,18 +120,22 @@ public class ServicioAlumnoImp implements ServicioAlumno {
 		return alumnoVo;
 	}
 
-	@Transactional
+	
 	@Override
 	public AlumnoVO deleteById(Integer id) {
 		AlumnoVO alumnoVo = new AlumnoVO();
 
 		try {
-			Alumno alumnoEncontrado = alumnoDao.findById(id).orElse(null);
-				alumnoEncontrado.setCurso(null);
-				alumnoDao.save(alumnoEncontrado);
-				
-				alumnoDao.deleteById(id);
-			
+			  Alumno alumnoEncontrado = alumnoDao.findById(id).orElse(null);
+			  Curso curso = alumnoEncontrado.getCurso();
+		        
+			  if (curso !=null) {
+				  curso.getAlumnos().remove(alumnoEncontrado);
+				  
+			  }
+			  
+
+		        alumnoDao.deleteById(id);
 
 			if (alumnoDao.existsById(id)) {
 				alumnoVo.setEstado(0);

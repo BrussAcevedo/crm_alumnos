@@ -31,7 +31,7 @@ public class Curso {
 	private String descripcion;
 	private Integer cantidadEstudiantes;
 
-	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Alumno> alumnos;
 
 	public Curso(String nombre, String descripcion, Integer cantidadEstudiantes, List<Alumno> alumnos) {
